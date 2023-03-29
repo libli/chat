@@ -35,6 +35,47 @@ sqlite3 chat.db
 sqlite> insert into users (username, token) VALUES ('***', '****');
 ```
 
+5. 如果需要支持https协议，使用nginx反向代理即可。参考如下配置：
+```nginx
+server {
+    listen       80;
+    listen       [::]:80;
+    server_name  api.exapmle.com;
+    return       301 https://$host$request_uri;
+}
+
+# Settings https.
+server {
+    listen       443 ssl http2;
+    listen       [::]:443 ssl http2;
+    server_name  api.exapmle.com;
+
+    ssl_certificate             "/etc/pki/nginx/api.exapmle.com.crt";
+    ssl_certificate_key         "/etc/pki/nginx/private/api.exapmle.com.key";
+    ssl_session_cache           shared:SSL:1m;
+    ssl_session_timeout         10m;
+    ssl_ciphers                 HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers   on;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    location / {
+        proxy_pass       http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+## 一些用法
+### OpenCat客户端
+OpenCat虽然有了团队版，但是划在收费版功能。可以直接利用自定义OpenAI域名的功能达到团队使用。
+1. 在自己的服务器部署本服务，OpenAI Key只在自己服务器上保存，不会泄露。
+2. 在服务器分配用户key，自己可以随便配key。
+3. 在OpenCat客户端中，设置自定义OpenAI域名为自己的服务器地址，例如：https://api.exapmle.com
+4. 在OpenCat客户端中，设置API key为自己在服务器上创建的key。
+
 ## 开源协议
 MIT，随便拿去用，记得多帮我宣传宣传。
 
