@@ -2,6 +2,7 @@ package handler
 
 import (
 	"io"
+	"log"
 	"net/http"
 	"strings"
 
@@ -26,6 +27,8 @@ func NewProxyHandler(key string, user *repo.UserRepo) *ProxyHandler {
 // Proxy is the handler for the openai proxy.
 func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 	auth := r.Header.Get("Authorization")
+
+	log.Println("auth: ", auth)
 	if auth == "" {
 		w.WriteHeader(401)
 		w.Write([]byte("Unauthorized"))
@@ -41,15 +44,17 @@ func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 	uri := openAIURL + r.RequestURI
 	destReq, err := http.NewRequest(r.Method, uri, r.Body)
 	if err != nil {
+		log.Println("new request error: ", err)
 		w.WriteHeader(500)
 		w.Write([]byte("Internal Server Error"))
 		return
 	}
 	p.copyHeaders(r.Header, &destReq.Header)
 
-	client := &http.Client{}
-	destResp, err := client.Do(destReq)
+	var transport http.Transport
+	destResp, err := transport.RoundTrip(destReq)
 	if err != nil {
+		log.Println("do request error: ", err)
 		w.WriteHeader(500)
 		w.Write([]byte("Internal Server Error"))
 		return
@@ -57,10 +62,12 @@ func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 	defer destResp.Body.Close()
 	body, err := io.ReadAll(destResp.Body)
 	if err != nil {
+		log.Println("read response error: ", err)
 		w.WriteHeader(500)
 		w.Write([]byte("Internal Server Error"))
 		return
 	}
+	log.Println("success")
 	respHeader := w.Header()
 	p.copyHeaders(destResp.Header, &respHeader)
 	w.Write(body)
@@ -68,9 +75,10 @@ func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 
 func (p *ProxyHandler) checkToken(token string) bool {
 	user := p.user.GetByToken(token)
-	if user == nil {
+	if user == nil || user.Token != token {
 		return false
 	}
+	log.Println("user name: ", user.Username)
 	p.user.UpdateCount(user)
 	return true
 }
