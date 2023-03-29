@@ -1,0 +1,3 @@
+GinPort: 8080
+OpenAIKey: "**"
+DBName: "chat.db"
