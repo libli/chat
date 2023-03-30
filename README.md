@@ -69,12 +69,17 @@ server {
 ```
 
 ## 一些用法
-### OpenCat客户端
+### OpenCat客户端 (iOS Mac)
+
 OpenCat虽然有了团队版，但是划在收费版功能。可以直接利用自定义OpenAI域名的功能达到团队使用。
 1. 在自己的服务器部署本服务，OpenAI Key只在自己服务器上保存，不会泄露。
 2. 在服务器分配用户key，自己可以随便配key。
 3. 在OpenCat客户端中，设置自定义OpenAI域名为自己的服务器地址，例如：https://api.exapmle.com
 4. 在OpenCat客户端中，设置API key为自己在服务器上创建的key。
+
+### ChatBoost（Android）
+
+设置自定义API地址为本服务部署的地址，客户端上的OpenAI API密钥设为自己在sqlite中分配的密钥。
 
 ## 开源协议
 MIT，随便拿去用，记得多帮我宣传宣传。
