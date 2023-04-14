@@ -97,7 +97,7 @@ docker run --name=chatgpt -d --restart=unless-stopped \
   -e OPENAI_API_KEY="" \
   -e BASE_URL="myapi.com" \
   -e PROTOCOL="https" \
-  yidadaa/chatgpt-next-web:lates
+  yidadaa/chatgpt-next-web:latest
 ```
 
 把BASE_URL替换为部署本docker的服务器域名，OPENAI_API_KEY留空，不需要填。
