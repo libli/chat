@@ -82,6 +82,25 @@ OpenCat虽然有了团队版，但是划在收费版功能。可以直接利用�
 
 设置自定义API地址为本服务部署的地址，客户端上的OpenAI API密钥设为自己在sqlite中分配的密钥。
 
+### ChatGTP Box（浏览器插件）
+https://chrome.google.com/webstore/detail/chatgptbox/eobbhoofkanlmddnplfhnmkfbnlhpbbo
+在“高级”中的“自定义的ChatGPT网页API地址”修改为部署本docker的域名，“API模式”后面的框中输入本Docker中自己在sqlite3中插入的key。
+
+### ChatGPT-Next-web（网页版）
+https://github.com/Yidadaa/ChatGPT-Next-Web
+部署该docker时参考如下：
+```
+docker run --name=chatgpt -d --restart=unless-stopped \
+  -p 3000:3000 \
+  -e OPENAI_API_KEY="" \
+  -e BASE_URL="myapi.com" \
+  -e PROTOCOL="https" \
+  yidadaa/chatgpt-next-web:lates
+```
+把BASE_URL替换为部署本docker的服务器域名，OPENAI_API_KEY留空，不需要填。
+这样用户访问网页版时，直接使用自己分配的KEY即可。
+
+
 ## 开源协议
 MIT，随便拿去用，记得多帮我宣传宣传。
 
