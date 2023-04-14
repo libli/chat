@@ -82,7 +82,7 @@ OpenCat虽然有了团队版，但是划在收费版功能。可以直接利用�
 
 设置自定义API地址为本服务部署的地址，客户端上的OpenAI API密钥设为自己在sqlite中分配的密钥。
 
-### ChatGTP Box（浏览器插件）
+### ChatGPT Box（浏览器插件）
 https://chrome.google.com/webstore/detail/chatgptbox/eobbhoofkanlmddnplfhnmkfbnlhpbbo
 在“高级”中的“自定义的ChatGPT网页API地址”修改为部署本docker的域名，“API模式”后面的框中输入本Docker中自己在sqlite3中插入的key。
 
