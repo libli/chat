@@ -1,3 +1,11 @@
 GinPort: 8080
 OpenAIKey: "**"
 DBName: "chat.db"
+Driver: "mysql"
+
+MySQL:
+  Host: ""
+  Port: ""
+  Username: ""
+  Password: ""
+  DBName: ""

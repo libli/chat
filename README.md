@@ -69,6 +69,21 @@ server {
 }
 ```
 
+## MySQL 支持
+如果不想用 sqlite3，可以使用 MySQL。在 config.yaml 中配置以下内容：
+```yaml
+GinPort: 8080
+OpenAIKey: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+Driver: "mysql"
+
+MySQL:
+  Host: ""
+  Port: "3306"
+  Username: ""
+  Password: ""
+  DBName: ""
+```
+
 ## 一些用法
 ### OpenCat客户端 (iOS Mac)
 
