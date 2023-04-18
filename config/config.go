@@ -1,6 +1,7 @@
 package config
 
 import (
+	"chat/model"
 	"fmt"
 	"os"
 
@@ -10,9 +11,10 @@ import (
 const configFilename = "config.yaml"
 
 type Config struct {
-	OpenAIKey string `yaml:"OpenAIKey"`
-	DBName    string `yaml:"DBName"`
-	GinPort   string `yaml:"GinPort"`
+	OpenAIKey string       `yaml:"OpenAIKey"`
+	DBName    string       `yaml:"DBName"`
+	GinPort   string       `yaml:"GinPort"`
+	InitUsers []model.User `yaml:"InitUsers"`
 }
 
 // Parse parses the config file and returns a Config struct.

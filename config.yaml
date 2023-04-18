@@ -1,3 +1,10 @@
 GinPort: 8080
 OpenAIKey: "**"
 DBName: "chat.db"
+InitUsers:
+  - Username: userAAA
+    Token: abcd
+  - Username: userBBB
+    Token: bbcd
+  - Username: user111
+    Token: ddcd
