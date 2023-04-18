@@ -1,6 +1,10 @@
 package repo
 
 import (
+	"chat/model"
+	"log"
+	"time"
+
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
@@ -12,18 +16,40 @@ type SQLiteRepo struct {
 }
 
 // NewSQLiteRepo 创建SQLite数据库
-func NewSQLiteRepo(dbname string) (*SQLiteRepo, error) {
+func NewSQLiteRepo(dbname string, users []model.User) (*SQLiteRepo, error) {
+	log.Println("Init:", dbname)
 	db, err := gorm.Open(sqlite.Open(dbname), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
-	return &SQLiteRepo{
+	repo := SQLiteRepo{
 		db:   db,
 		User: newUserRepo(db),
-	}, nil
+	}
+	repo.AutoMigrate()
+	for _, it := range users {
+		it.CreateTime = time.Now()
+		u := repo.User.GetByName(it.Username)
+		log.Printf("%+v", u)
+		if u.Username == it.Username && u.Token == it.Token {
+			continue
+		} else {
+			if u.Username == it.Username {
+				u.Token = it.Token
+				repo.User.db.Save(u)
+			} else {
+				repo.User.Add(&it)
+				if repo.User.GetByName(it.Username).Username == it.Username {
+					log.Println("Inited:", it.Username, it.Token)
+				}
+			}
+		}
+	}
+	log.Println("Inited:", "ALL")
+	return &repo, nil
 }
 
 // AutoMigrate 创建用户表
 func (r *SQLiteRepo) AutoMigrate() error {
-	return r.db.AutoMigrate(&User{})
+	return r.db.AutoMigrate(&model.User{})
 }
