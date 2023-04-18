@@ -25,7 +25,12 @@ InitUsers:
     Token: ddcd
 ```
 
-2. 运行 docker:
+2. 创建一个空的数据库文件chat.db: 
+```bash
+touch chat.db
+```
+
+3. 运行 docker:
 
 ```bash
 docker run --name=chatapi -d \
@@ -35,9 +40,17 @@ docker run --name=chatapi -d \
   libli/chat:latest
 ```
 
-把上面命令中的/root/chat 替换为你的配置文件和数据库文件所在的目录。
+把上面命令中的 `/root/chat` 替换为你的配置文件和数据库文件所在的目录。
 
-3. 如果需要支持 https 协议，使用 nginx 反向代理即可。参考如下配置：
+4. 后续可用 sqlite3 管理数据库，确保已经安装sqlite3客户端，例如：
+
+```bash
+sqlite3 chat.db
+sqlite> select * from users;
+sqlite> insert into users (username, token) VALUES ('***', '****');
+```
+
+4. 如果需要支持 https 协议，使用 nginx 反向代理即可。参考如下配置：
 
 ```nginx
 server {
@@ -109,6 +122,19 @@ docker run --name=chatgpt -d --restart=unless-stopped \
 
 把 BASE_URL 替换为部署本 docker 的服务器域名，OPENAI_API_KEY 留空，不需要填。
 这样用户访问网页版时，直接使用自己分配的 KEY 即可。
+
+### xcatliu/chatgpt-next (网页版)
+
+https://github.com/xcatliu/chatgpt-next
+
+部署该 docker 时参考如下：
+
+```
+docker run --name=chatgpt-next -d --restart=unless-stopped \
+  -p 3000:3000 \
+  -e CHATGPT_NEXT_API_HOST="http://api.example.com:8080" \
+  xcatliu/chatgpt-next:latest
+```
 
 ## 开源协议
 

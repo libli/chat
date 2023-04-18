@@ -1,9 +1,10 @@
 package repo
 
 import (
-	"chat/model"
 	"log"
 	"time"
+
+	"chat/model"
 
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"

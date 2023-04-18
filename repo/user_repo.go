@@ -1,9 +1,10 @@
 package repo
 
 import (
-	"chat/model"
 	"log"
 	"time"
+
+	"chat/model"
 
 	"gorm.io/gorm"
 )
