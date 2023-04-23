@@ -93,9 +93,8 @@ server {
 OpenCat 虽然有了团队版，但是划在收费版功能。可以直接利用自定义 OpenAI 域名的功能达到团队免费使用。
 
 1. 在自己的服务器部署本服务，OpenAI Key 只在自己服务器上保存，不会泄露。
-2. 在服务器分配用户 key，自己可以随便配 key。
-3. 在 OpenCat 客户端中，设置 API key 为自己在服务器上创建的 key。
-4. 在 OpenCat 客户端中，设置自定义 OpenAI 域名为自己的服务器地址，例如：https://api.exapmle.com 点击“自定义 API 域名”下的“验证”即可。
+2. 在 OpenCat 客户端中，设置 API key 为 config.yaml 中自己设置的 Token。
+3. 在 OpenCat 客户端中，设置自定义 OpenAI 域名为自己的服务器地址，例如：https://api.exapmle.com 点击“自定义 API 域名”下的“验证”即可。
 
 ### ChatBoost（Android）
 
