@@ -25,6 +25,8 @@ InitUsers:
     Token: ddcd
 ```
 
+Username 和 Token 就是你想分配的用户名和密码。用户用该配置文件里的 Token 即可在各种客户端中调用 OpenAI 的 API。
+
 2. 创建一个空的数据库文件chat.db: 
 ```bash
 touch chat.db
