@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"io"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"strings"
 
 	"chat/repo"
 )
 
-const openAIURL = "https://api.openai.com"
+const openAIURL = "api.openai.com"
 
 type ProxyHandler struct {
 	OpenAIKey string
@@ -41,36 +41,15 @@ func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uri := openAIURL + r.RequestURI
-	destReq, err := http.NewRequest(r.Method, uri, r.Body)
-	if err != nil {
-		log.Println("new request error: ", err)
-		w.WriteHeader(500)
-		w.Write([]byte("Internal Server Error"))
-		return
+	director := func(req *http.Request) {
+		req.URL.Scheme = "https"
+		req.URL.Host = openAIURL
+		req.Host = openAIURL
+		req.Header.Set("Authorization", "Bearer "+p.OpenAIKey)
 	}
-	p.copyHeaders(r.Header, &destReq.Header)
-
-	var transport http.Transport
-	destResp, err := transport.RoundTrip(destReq)
-	if err != nil {
-		log.Println("do request error: ", err)
-		w.WriteHeader(500)
-		w.Write([]byte("Internal Server Error"))
-		return
-	}
-	defer destResp.Body.Close()
-	body, err := io.ReadAll(destResp.Body)
-	if err != nil {
-		log.Println("read response error: ", err)
-		w.WriteHeader(500)
-		w.Write([]byte("Internal Server Error"))
-		return
-	}
-	log.Println("success")
-	respHeader := w.Header()
-	p.copyHeaders(destResp.Header, &respHeader)
-	w.Write(body)
+	proxy := &httputil.ReverseProxy{Director: director}
+	proxy.ServeHTTP(w, r)
+	log.Printf("[*] receive the destination website response header: %s\n", w.Header())
 }
 
 func (p *ProxyHandler) checkToken(token string) bool {
@@ -81,19 +60,4 @@ func (p *ProxyHandler) checkToken(token string) bool {
 	log.Println("user name: ", user.Username)
 	p.user.UpdateCount(user)
 	return true
-}
-
-// copyHeaders copies the headers from source to dest.
-func (p *ProxyHandler) copyHeaders(source http.Header, dest *http.Header) {
-	// Header结构体为 map[string][]string，因为头部参数中可以使用相同的key
-	for key, values := range source {
-		// 把Authorization替换成OpenAI的key
-		if key == "Authorization" {
-			dest.Add("Authorization", "Bearer "+p.OpenAIKey)
-			continue
-		}
-		for _, value := range values {
-			dest.Add(key, value)
-		}
-	}
 }

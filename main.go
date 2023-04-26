@@ -25,6 +25,7 @@ func main() {
 		log.Fatal(err)
 	}
 	proxy := handler.NewProxyHandler(c.OpenAIKey, sqliteRepo.User)
+
 	http.HandleFunc("/", proxy.Proxy)
 	http.HandleFunc("/healthz", healthz)
 	log.Println("Serveing", ":"+c.GinPort)
