@@ -7,6 +7,7 @@
 3. 服务器部署在可调用 OpenAI SDK 的地区，所有客户端免翻墙
 4. 支持用户管理功能，为每个用户分配独立的 key，团队使用
 5. 统计每个用户的 API 调用次数
+6. 支持 SSE
 
 ## 部署
 
@@ -52,7 +53,7 @@ sqlite> select * from users;
 sqlite> insert into users (username, token) VALUES ('***', '****');
 ```
 
-4. 如果需要支持 https 协议，使用 nginx 反向代理即可。参考如下配置：
+4. 如果需要支持 https 协议，使用 nginx 反向代理即可。参考如下配置（支持SSE）：
 
 ```nginx
 server {
@@ -82,6 +83,10 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        chunked_transfer_encoding off;
+        proxy_buffering off;
     }
 }
 ```
