@@ -101,6 +101,12 @@ OpenCat 虽然有了团队版，但是划在收费版功能。可以直接利用
 2. 在 OpenCat 客户端中，设置 API key 为 config.yaml 中自己设置的 Token。
 3. 在 OpenCat 客户端中，设置自定义 OpenAI 域名为自己的服务器地址，例如：https://api.exapmle.com 点击“自定义 API 域名”下的“验证”即可。
 
+### ChatBox (Windows, Mac, Linux)
+
+https://github.com/Bin-Huang/chatbox
+
+在设置中填入API域名为本服务部署的地址，API key 为自己在 sqlite 中分配的密钥。
+
 ### ChatBoost（Android）
 
 设置自定义 API 地址为本服务部署的地址，客户端上的 OpenAI API 密钥设为自己在 sqlite 中分配的密钥。
