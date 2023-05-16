@@ -107,6 +107,8 @@ https://github.com/Bin-Huang/chatbox
 
 在设置中填入API域名为本服务部署的地址，API key 为自己在 sqlite 中分配的密钥。
 
+目前chatbox只支持https的API域名，所以需要在nginx中配置https。
+
 ### ChatBoost（Android）
 
 设置自定义 API 地址为本服务部署的地址，客户端上的 OpenAI API 密钥设为自己在 sqlite 中分配的密钥。

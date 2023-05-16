@@ -27,7 +27,7 @@ func NewProxyHandler(key string, user *repo.UserRepo) *ProxyHandler {
 // Proxy is the handler for the openai proxy.
 func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 	// CORS
-	if r.Method == "OPTIONS" {
+	if r.Method == http.MethodOptions {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
