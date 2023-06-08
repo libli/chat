@@ -8,6 +8,7 @@
 4. 支持用户管理功能，为每个用户分配独立的 key，团队使用
 5. 统计每个用户的 API 调用次数
 6. 支持 SSE
+7. 支持多 TOKEN 负载均衡
 
 ## 部署
 
@@ -15,7 +16,8 @@
 
 ```yaml
 GinPort: 8080
-OpenAIKey: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+OpenAIKey:
+  - sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 DBName: "chat.db"
 InitUsers:
   - Username: userAAA
@@ -28,7 +30,8 @@ InitUsers:
 
 Username 和 Token 就是你想分配的用户名和密码。用户用该配置文件里的 Token 即可在各种客户端中调用 OpenAI 的 API。
 
-2. 创建一个空的数据库文件chat.db: 
+2. 创建一个空的数据库文件 chat.db:
+
 ```bash
 touch chat.db
 ```
@@ -45,7 +48,7 @@ docker run --name=chatapi -d \
 
 把上面命令中的 `/root/chat` 替换为你的配置文件和数据库文件所在的目录。
 
-4. 后续可用 sqlite3 管理数据库，确保已经安装sqlite3客户端，例如：
+4. 后续可用 sqlite3 管理数据库，确保已经安装 sqlite3 客户端，例如：
 
 ```bash
 sqlite3 chat.db
@@ -53,7 +56,7 @@ sqlite> select * from users;
 sqlite> insert into users (username, token) VALUES ('***', '****');
 ```
 
-4. 如果需要支持 https 协议，使用 nginx 反向代理即可。参考如下配置（支持SSE）：
+4. 如果需要支持 https 协议，使用 nginx 反向代理即可。参考如下配置（支持 SSE）：
 
 ```nginx
 server {
@@ -105,9 +108,9 @@ OpenCat 虽然有了团队版，但是划在收费版功能。可以直接利用
 
 https://github.com/Bin-Huang/chatbox
 
-在设置中填入API域名为本服务部署的地址，API key 为自己在 sqlite 中分配的密钥。
+在设置中填入 API 域名为本服务部署的地址，API key 为自己在 sqlite 中分配的密钥。
 
-目前chatbox只支持https的API域名，所以需要在nginx中配置https。
+目前 chatbox 只支持 https 的 API 域名，所以需要在 nginx 中配置 https。
 
 ### ChatBoost（Android）
 

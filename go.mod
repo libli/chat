@@ -1,11 +1,13 @@
 module chat
 
-go 1.19
+go 1.18
 
 require (
 	github.com/glebarez/sqlite v1.7.0
+	github.com/thegeekyasian/round-robin-go v0.0.0-20230209221520-ee0e2ad436ff
+	github.com/ysmood/gop v0.0.3
 	gopkg.in/yaml.v3 v3.0.1
-	gorm.io/gorm v1.24.6
+	gorm.io/gorm v1.25.1
 )
 
 require (
