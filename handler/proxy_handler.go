@@ -9,7 +9,7 @@ import (
 	"chat/repo"
 )
 
-const openAIURL = "api.openai.com"
+const OpenAIURL = "api.openai.com"
 
 type ProxyHandler struct {
 	OpenAIKey func(*http.Request) string
@@ -52,8 +52,8 @@ func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 
 	director := func(req *http.Request) {
 		req.URL.Scheme = "https"
-		req.URL.Host = openAIURL
-		req.Host = openAIURL
+		req.URL.Host = OpenAIURL
+		req.Host = OpenAIURL
 		req.Header.Set("Authorization", "Bearer "+p.OpenAIKey(r))
 	}
 	proxy := &httputil.ReverseProxy{Director: director}
