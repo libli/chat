@@ -6,9 +6,10 @@ require (
 	github.com/carlmjohnson/requests v0.23.4
 	github.com/glebarez/sqlite v1.8.0
 	github.com/thegeekyasian/round-robin-go v0.0.0-20230209221520-ee0e2ad436ff
+	github.com/tidwall/gjson v1.14.4
 	github.com/ysmood/gop v0.0.3
-	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.25.1
+	sigs.k8s.io/yaml v1.3.0
 )
 
 require (
@@ -19,8 +20,11 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.0 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	modernc.org/libc v1.22.3 // indirect
 	modernc.org/mathutil v1.5.0 // indirect
 	modernc.org/memory v1.5.0 // indirect

@@ -3,25 +3,26 @@ package config
 import (
 	"chat/model"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
-	"sync"
 
 	roundrobin "github.com/thegeekyasian/round-robin-go"
+	"github.com/tidwall/gjson"
 	"github.com/ysmood/gop"
-	"gopkg.in/yaml.v3"
+	"sigs.k8s.io/yaml"
 )
 
 const configFilename = "config.yaml"
-
-var w sync.WaitGroup
+const GJSON_KEY_OPENAIKEY = `OpenAIKey`
 
 type Config struct {
-	OpenAIKey []*string    `yaml:"OpenAIKey"`
 	DBName    string       `yaml:"DBName"`
 	GinPort   string       `yaml:"GinPort"`
 	InitUsers []model.User `yaml:"InitUsers"`
-	rr        *roundrobin.RoundRobin[string]
+
+	openAIKeys []*string
+	rr         *roundrobin.RoundRobin[string]
 }
 
 // Parse parses the config file and returns a Config struct.
@@ -35,9 +36,28 @@ func Parse() (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse config file: %w", err)
 	}
-	c.rr, _ = roundrobin.New(c.OpenAIKey...)
+
+	jsonBuf, _ := yaml.YAMLToJSON(buf)
+	for _, v := range gjson.GetBytes(jsonBuf, GJSON_KEY_OPENAIKEY).Array() {
+		vStr := v.String()
+		c.openAIKeys = append(c.openAIKeys, &vStr)
+	}
+
+	if len(c.openAIKeys) < 1 {
+		log.Fatalf("Plz Set at least one `%s`\n", GJSON_KEY_OPENAIKEY)
+	}
+	c.rr, _ = roundrobin.New(c.openAIKeys...)
+
 	gop.P(c)
 	return c, nil
+}
+
+func (c *Config) AllKeys() []string {
+	var keys []string
+	for k := range c.openAIKeys {
+		keys = append(keys, *c.openAIKeys[k])
+	}
+	return keys
 }
 
 func (c *Config) RoundRobinKey(*http.Request) string {

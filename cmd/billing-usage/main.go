@@ -26,7 +26,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	for _, v := range c.OpenAIKey {
+	for _, v := range c.AllKeys() {
 		totalUsage := 0.0
 		t0, _ := time.Parse("2006-01-02", "2023-01-01")
 		// log.Println(k, *v)
@@ -40,15 +40,15 @@ func main() {
 			var b balance
 			err := requests.
 				URL(fmt.Sprintf(`https://%s/dashboard/billing/usage?start_date=%s&end_date=%s`, handler.OpenAIURL, t1.Format("2006-01-02"), t2.Format("2006-01-02"))).
-				Header("Authorization", "Bearer "+*v).
+				Header("Authorization", "Bearer "+v).
 				ToJSON(&b).
 				Fetch(ctx)
 			if err != nil {
-				log.Println(*v, err)
+				log.Println(v, err)
 			} else {
 				totalUsage += float64(b.TotalUsage)
 			}
 		}
-		log.Println(*v, totalUsage)
+		log.Println(v, totalUsage)
 	}
 }

@@ -16,8 +16,10 @@
 
 ```yaml
 GinPort: 8080
-OpenAIKey:
-  - sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OpenAIKey: "sk-****"
+# OpenAIKey:
+#   - "sk-****"
+#   - "sk-****"
 DBName: "chat.db"
 InitUsers:
   - Username: userAAA

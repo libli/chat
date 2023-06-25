@@ -12,7 +12,7 @@ ADD . .
 RUN CGO_ENABLED=0 GOARCH=${TARGETARCH} go build -ldflags="-w -s" -x .
 
 # finally
-FROM --platform=$TARGETPLATFORM debian:stable-slim
+FROM --platform=$TARGETPLATFORM debian:bullseye-slim
 
 ARG MIRRORS=mirrors.tencent.com
 
@@ -27,6 +27,6 @@ COPY --from=builder /app/chat /usr/local/bin
 
 WORKDIR /web
 
-Expose 8080
+EXPOSE 8080
 
 CMD chat
