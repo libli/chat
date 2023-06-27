@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"runtime"
 
 	"chat/config"
 	"chat/handler"
@@ -15,6 +16,8 @@ func healthz(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	log.Printf("chatapi (%s)", runtime.Version())
+
 	// 读取配置文件
 	c, err := config.Parse()
 	if err != nil {
@@ -24,7 +27,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	proxy := handler.NewProxyHandler(c.OpenAIKey, sqliteRepo.User)
+	proxy := handler.NewProxyHandler(c.RoundRobinKey, sqliteRepo.User)
 
 	http.HandleFunc("/", proxy.Proxy)
 	http.HandleFunc("/healthz", healthz)

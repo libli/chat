@@ -7,6 +7,7 @@ import (
 	"chat/model"
 
 	"github.com/glebarez/sqlite"
+	// "github.com/ysmood/gop"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +32,7 @@ func NewSQLiteRepo(dbname string, users []model.User) (*SQLiteRepo, error) {
 	for _, it := range users {
 		it.CreateTime = time.Now()
 		u := repo.User.GetByName(it.Username)
-		log.Printf("%+v", u)
+		// gop.P(u)
 		if u.Username == it.Username && u.Token == it.Token {
 			continue
 		} else {

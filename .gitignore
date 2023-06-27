@@ -31,3 +31,5 @@ chat
 *.html
 
 chat.db
+
+config.*.yaml

@@ -1,0 +1,6 @@
+/*.md
+/config.yaml*
+/Dockerfile*
+
+/chat.db
+/chat*
