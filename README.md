@@ -134,8 +134,7 @@ https://github.com/Yidadaa/ChatGPT-Next-Web
 docker run --name=chatgpt -d --restart=unless-stopped \
   -p 3000:3000 \
   -e OPENAI_API_KEY="" \
-  -e BASE_URL="myapi.com" \
-  -e PROTOCOL="https" \
+  -e BASE_URL="http://myapi.com" \
   yidadaa/chatgpt-next-web:latest
 ```
 

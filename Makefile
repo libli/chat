@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := build
 .PHONY: build clean push
 build:
-	docker build --platform linux/amd64 -t libli/chat:1.3 -t libli/chat:latest .
+	docker build --platform linux/amd64 -t libli/chat:1.4 -t libli/chat:latest .
 push:
 	@echo "Pushing to docker hub"
 	docker login -u libli -p $(DOCKER_PASSWORD)

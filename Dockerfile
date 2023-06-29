@@ -1,32 +1,27 @@
 # builder
-FROM --platform=$TARGETPLATFORM golang:1.20 as builder
-ARG TARGETARCH
-ARG GOPROXY="https://mirrors.tencent.com/go/,direct"
+FROM golang:1.20-bullseye as builder
 
-WORKDIR /app
+WORKDIR /build
 
-ADD go.mod go.sum ./
+COPY go.mod .
+COPY go.sum .
 RUN go mod download -x
 
-ADD . .
-RUN CGO_ENABLED=0 GOARCH=${TARGETARCH} go build -ldflags="-w -s" -x .
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -x .
 
-# finally
-FROM --platform=$TARGETPLATFORM debian:bullseye-slim
-
-ARG MIRRORS=mirrors.tencent.com
-
-RUN set -ex && cd / \
-    && sed "s+//.*debian.org+//${MIRRORS}+g; /^#/d" -i /etc/apt/sources.list \
-    && apt --allow-releaseinfo-change -y update \
-    && apt install -y --no-install-recommends ca-certificates \
+# production stage
+FROM debian:bullseye-slim
+RUN apt update \
+    && apt install -y apt-transport-https ca-certificates \
     && update-ca-certificates \
-    && rm -rf /var/cache/apt/* /root/.cache
+    && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /app/chat /usr/local/bin
+ENV TZ=Asia/Shanghai
+COPY --from=builder /build/chat /web/
 
 WORKDIR /web
 
 EXPOSE 8080
 
-CMD chat
+ENTRYPOINT [ "/web/chat" ]
