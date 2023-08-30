@@ -27,7 +27,7 @@ func (u *UserRepo) Add(user *model.User) {
 // GetByToken 根据token获取用户
 func (u *UserRepo) GetByToken(token string) *model.User {
 	var user model.User
-	u.db.Where("token = ?", token).First(&user)
+	u.db.Where("token = ? AND status = ?", token, 1).First(&user)
 	return &user
 }
 
