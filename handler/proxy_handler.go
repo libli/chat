@@ -55,6 +55,13 @@ func (p *ProxyHandler) Proxy(w http.ResponseWriter, r *http.Request) {
 		req.URL.Host = OpenAIURL
 		req.Host = OpenAIURL
 		req.Header.Set("Authorization", "Bearer "+p.OpenAIKey(r))
+		req.Header.Del("Sec-Ch-Ua")
+		req.Header.Del("Sec-Ch-Ua-Mobile")
+		req.Header.Del("Sec-Ch-Ua-Platform")
+		req.Header.Del("Sec-Fetch-Dest")
+		req.Header.Del("Sec-Fetch-Mode")
+		req.Header.Del("Sec-Fetch-Site")
+		req.Header.Set("User-Agent", "Darwin/23.4.0")
 	}
 	proxy := &httputil.ReverseProxy{Director: director}
 	proxy.ServeHTTP(w, r)
